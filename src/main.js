@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import moment from 'moment'
+import VuePreview from 'vue-preview'
 
 import app from './App.vue'
 import router from './router'
@@ -19,6 +20,8 @@ Vue.component(Button.name, Button)
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(VuePreview)
+
 Vue.http.options.root = 'http://vue.studyit.io'
 Vue.filter('dataFormat', function (dataStr, pattern = "yyyy-mm-dd hh:mm:ss") {
     return moment(dataStr).format(pattern)
