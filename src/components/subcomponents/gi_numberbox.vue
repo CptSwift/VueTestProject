@@ -17,7 +17,7 @@
     export default {
         mounted() {
             // 初始化数字选择框组件
-            mui(".mui-numbox").numbox().setOption("max", this.max);;
+            mui(".mui-numbox").numbox()
             console.log("初始化最大值为"+this.max);
         },
         methods: {

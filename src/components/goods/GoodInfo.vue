@@ -115,7 +115,9 @@
                 	id: this.id, 
                 	count: this.selectedCount, 
                 	price: this.goodsinfo.sell_price,
-                	selected: true
+                	selected: true,
+                	img_url: this.goodsinfo.img_url,
+                	title: this.goodsinfo.title
                 }
                 this.$store.commit('addToCar', goodsinfo)
             },

@@ -9,20 +9,17 @@ import Vuex from 'vuex'
 import app from './App.vue'
 import router from './router'
 
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
-
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/icons-extra.css'
+import 'mint-ui/lib/style.css'
 
-Vue.component(Header.name, Header)
-Vue.component(Swipe.name, Swipe)
-Vue.component(SwipeItem.name, SwipeItem)
-Vue.component(Button.name, Button)
+import MintUI from 'mint-ui'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(VuePreview)
 Vue.use(Vuex)
+Vue.use(MintUI)
 
 Vue.http.options.root = 'http://vue.studyit.io'
 Vue.filter('dataFormat', function (dataStr, pattern = "yyyy-mm-dd hh:mm:ss") {
@@ -33,7 +30,7 @@ var car = JSON.parse(localStorage.getItem('car') || '[]')
 
 var store = new Vuex.Store({
     state: {
-    	car: []
+    	car: car
     },
     mutations: {
     	addToCar(state, goodsinfo){
@@ -50,6 +47,31 @@ var store = new Vuex.Store({
     		}
     		
     		localStorage.setItem('car', JSON.stringify(state.car))
+    	},
+    	updateGoodsInfo(state, goodsinfo){
+    		state.car.some(item => {
+    			if(item.id == goodsinfo.id){
+    				item.count = parseInt(goodsinfo.count)
+    				return true
+    			}
+    		})
+    	},
+    	removeFormCar(state, id){
+    		state.car.some((item, i) => {
+    			if(item.id == id){
+    				state.car.splice(i, 1)
+    				return true
+    			}
+    		})
+    		localStorage.setItem('car', JSON.stringfy(state.car))
+    	},
+    	updateGoodsSelected(state, info){
+    		state.car.some(item => {
+    			if(item.id == info.id){
+    				item.selected = info.selected
+    			}
+    		})
+    		localStorage.setItem('car', JSON.stringify(state.car))
     	}
     },
     getters: {
@@ -59,7 +81,32 @@ var store = new Vuex.Store({
     			c += item.count
     		})
     		return c
-    	}
+    	},
+    	getGoodsCount(state) {
+		    var o = {}
+		    state.car.forEach(item => {
+		      o[item.id] = item.count
+      		})
+		    return o
+	    },
+	    getGoodsSelected(state){
+		    var o = {}
+		    state.car.forEach(item => {
+		      o[item.id] = item.selected
+      		})
+		    return o
+	    },
+	    getGoodsCountAndAmount(state){
+	    	var o = {
+	    		count: 0,
+	    		amount: 0
+	    	}
+	    	state.car.forEach(item => {
+	    		o.count += item.count
+	    		o.amount += item.price * item.count
+	    	})
+	    	return o
+	    }
     }
 })
 
